@@ -2,6 +2,7 @@ require('dotenv').config()
 
 const { Toolkit } = require('actions-toolkit')
 const { GistBox, MAX_LINES, MAX_LENGTH } = require('gist-box')
+const { Twitter } = require('twitter-v2')
 
 const capitalize = (str) => str.slice(0, 1).toUpperCase() + str.slice(1)
 const truncate = (str) =>
@@ -28,16 +29,20 @@ const serializers = {
 Toolkit.run(
   async (tools) => {
     const { GIST_ID, GH_USERNAME, GH_PAT } = process.env
-    const { TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET,
-      TWITTER_ACCESS_TOKEN_KEY, TWITTER_ACCESS_TOKEN_SECRET,
-      TWITTER_HANDLER } = process.env
+    const {
+      TWITTER_CONSUMER_KEY,
+      TWITTER_CONSUMER_SECRET,
+      TWITTER_ACCESS_TOKEN_KEY,
+      TWITTER_ACCESS_TOKEN_SECRET,
+      TWITTER_HANDLER,
+    } = process.env
 
     // Twitter integration
     let client = new Twitter({
       consumer_key: TWITTER_CONSUMER_KEY,
       consumer_secret: TWITTER_CONSUMER_SECRET,
       access_token_key: TWITTER_ACCESS_TOKEN_KEY,
-      access_token_secret: TWITTER_ACCESS_TOKEN_SECRET
+      access_token_secret: TWITTER_ACCESS_TOKEN_SECRET,
     })
 
     // Get the user's public events
@@ -74,8 +79,15 @@ Toolkit.run(
   },
   {
     event: 'schedule',
-    secrets: ['GITHUB_TOKEN', 'GH_PAT', 'GH_USERNAME', 'GIST_ID',
-      'TWITTER_CONSUMER_KEY', 'TWITTER_CONSUMER_SECRET',
-      'TWITTER_ACCCESS_TOKEN_KEY', 'TWITTER_ACCESS_TOKEN_SECRET'],
+    secrets: [
+      'GITHUB_TOKEN',
+      'GH_PAT',
+      'GH_USERNAME',
+      'GIST_ID',
+      'TWITTER_CONSUMER_KEY',
+      'TWITTER_CONSUMER_SECRET',
+      'TWITTER_ACCCESS_TOKEN_KEY',
+      'TWITTER_ACCESS_TOKEN_SECRET',
+    ],
   }
 )
