@@ -4,6 +4,7 @@
   "description": "⚡️📌️ Update a gist to contain your recent activity",
   "author": "Jason Etcovitch <jasonetco@gmail.com>",
   "license": "ISC",
+  "type": "module",
   "scripts": {
     "test": "jest --coverage",
     "format": "prettier --write ./index.js"
@@ -15,7 +16,8 @@
   "dependencies": {
     "actions-toolkit": "^4.0.0",
     "dotenv": "^8.2.0",
-    "gist-box": "^0.3.1"
+    "gist-box": "^0.3.1",
+    "isomorphic-unfetch": "^3.1.0"
   },
   "devDependencies": {
     "husky": "^4.2.5",

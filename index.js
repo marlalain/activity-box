@@ -3,6 +3,7 @@ require('dotenv').config()
 const { Toolkit } = require('actions-toolkit')
 const { GistBox, MAX_LINES, MAX_LENGTH } = require('gist-box')
 const { Twitter } = require('twitter-v2')
+const { DevTo } = require('./devto')
 
 const capitalize = (str) => str.slice(0, 1).toUpperCase() + str.slice(1)
 const truncate = (str) =>
@@ -36,6 +37,11 @@ Toolkit.run(
       TWITTER_ACCESS_TOKEN_SECRET,
       TWITTER_HANDLER,
     } = process.env
+    const { DEV_TO_API_KEY, DEV_TO_USERNAME } = process.env
+
+    // Getting last post
+    let devto = new DevTo(DEV_TO_USERNAME, DEV_TO_API_KEY)
+    let data = await devto.getArticles().getData()
 
     // Get the user's public events
     tools.log.debug(`Getting activity for ${GH_USERNAME}`)
@@ -51,11 +57,12 @@ Toolkit.run(
       // Filter out any boring activity
       .filter((event) => serializers.hasOwnProperty(event.type))
       // We only have five lines to work with
-      .slice(0, MAX_LINES)
+      .slice(0, MAX_LINES - data.length)
       // Call the serializer to construct a string
       .map((item) => serializers[item.type](item))
       // Truncate if necessary
       .map(truncate)
+      .unshift(data)
       // Join items to one string
       .join('\n')
 
@@ -80,6 +87,8 @@ Toolkit.run(
       'TWITTER_CONSUMER_SECRET',
       'TWITTER_ACCCESS_TOKEN_KEY',
       'TWITTER_ACCESS_TOKEN_SECRET',
+      'DEV_TO_API_KEY',
+      'DEV_TO_USERNAME',
     ],
   }
 )
