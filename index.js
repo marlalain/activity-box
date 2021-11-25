@@ -28,6 +28,17 @@ const serializers = {
 Toolkit.run(
   async (tools) => {
     const { GIST_ID, GH_USERNAME, GH_PAT } = process.env
+    const { TWITTER_CONSUMER_KEY, TWITTER_CONSUMER_SECRET,
+      TWITTER_ACCESS_TOKEN_KEY, TWITTER_ACCESS_TOKEN_SECRET,
+      TWITTER_HANDLER } = process.env
+
+    // Twitter integration
+    let client = new Twitter({
+      consumer_key: TWITTER_CONSUMER_KEY,
+      consumer_secret: TWITTER_CONSUMER_SECRET,
+      access_token_key: TWITTER_ACCESS_TOKEN_KEY,
+      access_token_secret: TWITTER_ACCESS_TOKEN_SECRET
+    })
 
     // Get the user's public events
     tools.log.debug(`Getting activity for ${GH_USERNAME}`)
@@ -63,6 +74,8 @@ Toolkit.run(
   },
   {
     event: 'schedule',
-    secrets: ['GITHUB_TOKEN', 'GH_PAT', 'GH_USERNAME', 'GIST_ID'],
+    secrets: ['GITHUB_TOKEN', 'GH_PAT', 'GH_USERNAME', 'GIST_ID',
+      'TWITTER_CONSUMER_KEY', 'TWITTER_CONSUMER_SECRET',
+      'TWITTER_ACCCESS_TOKEN_KEY', 'TWITTER_ACCESS_TOKEN_SECRET'],
   }
 )
