@@ -14,5 +14,5 @@ jobs:
         env:
           GH_PAT: ${{ secrets.GH_PAT }}
           GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-          GH_USERNAME: paulo-e
+          GH_USERNAME: minsk-dev
           GIST_ID: 2592d87a9a883409cf2cd3a4853852a9
